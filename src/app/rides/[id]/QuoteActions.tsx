@@ -29,10 +29,10 @@ export default function QuoteActions({
   if (currentStatus !== "pending") {
     return (
       <span
-        className={`text-xs font-medium px-2 py-1 rounded-full ${
+        className={`text-xs font-medium px-2.5 py-1 rounded-full ${
           currentStatus === "accepted"
-            ? "bg-green-100 text-green-700"
-            : "bg-red-100 text-red-700"
+            ? "bg-teal/10 text-teal border border-teal/20"
+            : "bg-red-500/10 text-red-400 border border-red-500/20"
         }`}
       >
         {currentStatus === "accepted" ? "Accepted" : "Rejected"}
@@ -45,14 +45,14 @@ export default function QuoteActions({
       <button
         onClick={() => handleAction("accepted")}
         disabled={!!loading}
-        className="bg-green-600 text-white text-xs font-medium px-3 py-1.5 rounded-lg hover:bg-green-700 transition disabled:opacity-50 cursor-pointer"
+        className="bg-teal/10 text-teal border border-teal/20 text-xs font-medium px-3 py-1.5 rounded-lg hover:bg-teal/20 transition disabled:opacity-50 cursor-pointer"
       >
         {loading === "accepted" ? "..." : "Accept"}
       </button>
       <button
         onClick={() => handleAction("rejected")}
         disabled={!!loading}
-        className="bg-red-100 text-red-700 text-xs font-medium px-3 py-1.5 rounded-lg hover:bg-red-200 transition disabled:opacity-50 cursor-pointer"
+        className="bg-red-500/10 text-red-400 border border-red-500/20 text-xs font-medium px-3 py-1.5 rounded-lg hover:bg-red-500/20 transition disabled:opacity-50 cursor-pointer"
       >
         {loading === "rejected" ? "..." : "Reject"}
       </button>

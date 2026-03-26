@@ -34,15 +34,16 @@ export default async function RideDetailPage({ params }: Props) {
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
-      <a href="/rides" className="text-orange-600 hover:underline text-sm mb-4 inline-block">
+      <a href="/rides" className="text-accent hover:text-accent-light text-sm mb-4 inline-flex items-center gap-1 transition">
         ← Back to rides
       </a>
 
-      <div className="bg-white rounded-xl shadow p-6">
+      <div className="bg-dark-800/60 rounded-2xl border border-white/5 p-6">
+        {/* Route Header */}
         <div className="flex items-center gap-3 text-2xl font-bold mb-1">
-          <span>{ride.from_city}</span>
-          <span className="text-orange-500">→</span>
-          <span>{ride.to_city}</span>
+          <span className="text-white">{ride.from_city}</span>
+          <span className="text-accent">→</span>
+          <span className="text-white">{ride.to_city}</span>
         </div>
         <p className="text-gray-500 mb-6">
           {new Date(ride.date).toLocaleDateString("en-IN", {
@@ -51,48 +52,51 @@ export default async function RideDetailPage({ params }: Props) {
           at {ride.time}
         </p>
 
-        <div className="grid grid-cols-2 gap-4 mb-6">
-          <div className="bg-gray-50 rounded-lg p-4">
-            <p className="text-sm text-gray-500">Rider</p>
-            <p className="font-semibold">{ride.name}</p>
+        {/* Details Grid */}
+        <div className="grid grid-cols-2 gap-3 mb-6">
+          <div className="bg-dark-700/80 border border-white/5 rounded-xl p-4">
+            <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Rider</p>
+            <p className="font-semibold text-white">{ride.name}</p>
             {riderRating.count > 0 && (
-              <p className="text-sm text-yellow-600">
-                {riderRating.avg} ★ ({riderRating.count} reviews)
+              <p className="text-sm text-yellow-500 mt-0.5">
+                {riderRating.avg} ★ <span className="text-gray-500">({riderRating.count})</span>
               </p>
             )}
           </div>
-          <div className="bg-gray-50 rounded-lg p-4">
-            <p className="text-sm text-gray-500">Bike</p>
-            <p className="font-semibold">{ride.bike_model || "Not specified"}</p>
+          <div className="bg-dark-700/80 border border-white/5 rounded-xl p-4">
+            <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Bike</p>
+            <p className="font-semibold text-white">{ride.bike_model || "Not specified"}</p>
           </div>
-          <div className="bg-gray-50 rounded-lg p-4">
-            <p className="text-sm text-gray-500">Fuel Cost</p>
-            <p className="font-semibold text-orange-600 text-lg">₹{ride.fuel_cost}</p>
-            <p className="text-xs text-gray-400">Min quote: ₹{minQuote}</p>
+          <div className="bg-dark-700/80 border border-white/5 rounded-xl p-4">
+            <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Fuel Cost</p>
+            <p className="font-bold text-accent text-xl">₹{ride.fuel_cost}</p>
+            <p className="text-xs text-gray-600">Min quote: ₹{minQuote}</p>
           </div>
-          <div className="bg-gray-50 rounded-lg p-4">
-            <p className="text-sm text-gray-500">Phone</p>
-            <p className="font-semibold">{ride.phone}</p>
+          <div className="bg-dark-700/80 border border-white/5 rounded-xl p-4">
+            <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Phone</p>
+            <p className="font-semibold text-white">{ride.phone}</p>
           </div>
           {rider?.dl_number && (
-            <div className="bg-gray-50 rounded-lg p-4 col-span-2">
-              <p className="text-sm text-gray-500">Driving License</p>
-              <p className="font-semibold">{rider.dl_number}</p>
+            <div className="bg-dark-700/80 border border-white/5 rounded-xl p-4 col-span-2">
+              <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Driving License</p>
+              <p className="font-semibold text-white">{rider.dl_number}</p>
             </div>
           )}
         </div>
 
+        {/* Note */}
         {ride.note && (
-          <div className="bg-orange-50 rounded-lg p-4 mb-6">
-            <p className="text-sm text-gray-500 mb-1">Note from rider</p>
-            <p className="text-gray-800">{ride.note}</p>
+          <div className="bg-accent/5 border border-accent/10 rounded-xl p-4 mb-6">
+            <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Note from rider</p>
+            <p className="text-gray-300">{ride.note}</p>
           </div>
         )}
 
+        {/* Quote Section */}
         {currentUser && !isOwnRide && !hasQuoted && (
-          <div className="bg-blue-50 rounded-lg p-4 mb-6">
-            <p className="font-medium text-blue-800 mb-2">Send a fuel quote to join this ride</p>
-            <p className="text-sm text-blue-600 mb-3">
+          <div className="bg-royal/5 border border-royal/15 rounded-xl p-4 mb-6">
+            <p className="font-medium text-royal mb-2">Send a fuel quote to join this ride</p>
+            <p className="text-sm text-gray-500 mb-3">
               Offer between ₹{minQuote} and ₹{ride.fuel_cost}
             </p>
             <QuoteForm rideId={ride.id} minAmount={minQuote} maxAmount={ride.fuel_cost} />
@@ -100,37 +104,35 @@ export default async function RideDetailPage({ params }: Props) {
         )}
 
         {hasQuoted && (
-          <div className="bg-green-50 rounded-lg p-4 mb-6 text-green-800">
+          <div className="bg-teal/5 border border-teal/15 rounded-xl p-4 mb-6 text-teal">
             You have already sent a quote for this ride.
           </div>
         )}
 
         {isOwnRide && quotes.length > 0 && (
           <div className="mb-6">
-            <p className="font-medium mb-3">Quotes received ({quotes.length})</p>
+            <p className="font-medium text-white mb-3">Quotes received ({quotes.length})</p>
             <div className="space-y-2">
-              {quotes.map((q) => {
-                const quoterName = q.user_id;
-                return (
-                  <div key={q.user_id} className="bg-gray-50 rounded-lg p-3 flex items-center justify-between">
-                    <div>
-                      <p className="font-medium">{quoterName}</p>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <span className="text-orange-600 font-bold text-lg">₹{q.amount}</span>
-                      <QuoteActions rideId={ride.id} userId={q.user_id} currentStatus={q.status} />
-                    </div>
+              {quotes.map((q) => (
+                <div key={q.user_id} className="bg-dark-700/80 border border-white/5 rounded-xl p-3 flex items-center justify-between">
+                  <div>
+                    <p className="font-medium text-gray-300">{q.user_id}</p>
                   </div>
-                );
-              })}
+                  <div className="flex items-center gap-3">
+                    <span className="text-accent font-bold text-lg">₹{q.amount}</span>
+                    <QuoteActions rideId={ride.id} userId={q.user_id} currentStatus={q.status} />
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         )}
 
+        {/* Contact Buttons */}
         <div className="flex flex-col sm:flex-row gap-3">
           <a
             href={`tel:${ride.phone}`}
-            className="flex-1 text-center bg-orange-600 text-white font-semibold py-3 rounded-lg hover:bg-orange-700 transition"
+            className="flex-1 text-center bg-gradient-to-r from-accent to-teal text-dark-950 font-bold py-3 rounded-xl hover:shadow-lg hover:shadow-accent/25 transition-all"
           >
             Call {ride.name}
           </a>
@@ -138,15 +140,15 @@ export default async function RideDetailPage({ params }: Props) {
             href={whatsappLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 text-center bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700 transition"
+            className="flex-1 text-center bg-emerald-600/20 text-emerald-400 border border-emerald-500/20 font-semibold py-3 rounded-xl hover:bg-emerald-600/30 transition"
           >
             WhatsApp
           </a>
         </div>
 
         {!currentUser && (
-          <p className="text-center text-sm text-gray-500 mt-4">
-            <a href="/login" className="text-orange-600 font-medium hover:underline">Login</a>
+          <p className="text-center text-sm text-gray-600 mt-4">
+            <a href="/login" className="text-accent font-medium hover:underline">Login</a>
             {" "}to send a fuel quote and join this ride.
           </p>
         )}

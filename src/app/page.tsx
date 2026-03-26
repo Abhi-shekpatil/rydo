@@ -4,69 +4,76 @@ export default function Home() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-orange-500 to-orange-700 text-white">
-        <div className="max-w-5xl mx-auto px-4 py-20 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Ride Together, Save Together
+      <section className="relative overflow-hidden">
+        {/* Glow effects */}
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-royal/10 rounded-full blur-3xl" />
+
+        <div className="relative max-w-6xl mx-auto px-4 py-24 text-center">
+          <div className="inline-block bg-accent/10 text-accent text-sm font-medium px-4 py-1.5 rounded-full mb-6 border border-accent/20">
+            India&apos;s Intercity Bike Ride Pool
+          </div>
+          <h1 className="text-5xl md:text-6xl font-bold mb-5 leading-tight">
+            <span className="text-white">Ride Together,</span>
+            <br />
+            <span className="bg-gradient-to-r from-accent via-teal to-royal bg-clip-text text-transparent">
+              Save Together
+            </span>
           </h1>
-          <p className="text-lg md:text-xl text-orange-100 mb-10 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
             Find a co-rider for your next intercity bike trip. Share the journey,
-            split the cost, make new friends.
+            split the fuel cost, make new friends on the highway.
           </p>
 
           {/* Search Form */}
           <form
             action="/rides"
             method="GET"
-            className="bg-white rounded-2xl shadow-xl p-6 max-w-3xl mx-auto text-left"
+            className="bg-dark-800/80 backdrop-blur-sm rounded-2xl border border-white/5 p-6 max-w-3xl mx-auto text-left shadow-2xl shadow-dark-950/50"
           >
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs font-medium text-gray-500 mb-1.5 uppercase tracking-wider">
                   From
                 </label>
                 <select
                   name="from"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-gray-900 focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className="w-full bg-dark-700 border border-white/10 rounded-lg px-3 py-2.5 text-white focus:ring-2 focus:ring-accent/50 focus:border-accent/50 transition"
                 >
                   <option value="">Any city</option>
                   {cities.map((city) => (
-                    <option key={city} value={city}>
-                      {city}
-                    </option>
+                    <option key={city} value={city}>{city}</option>
                   ))}
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs font-medium text-gray-500 mb-1.5 uppercase tracking-wider">
                   To
                 </label>
                 <select
                   name="to"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-gray-900 focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className="w-full bg-dark-700 border border-white/10 rounded-lg px-3 py-2.5 text-white focus:ring-2 focus:ring-accent/50 focus:border-accent/50 transition"
                 >
                   <option value="">Any city</option>
                   {cities.map((city) => (
-                    <option key={city} value={city}>
-                      {city}
-                    </option>
+                    <option key={city} value={city}>{city}</option>
                   ))}
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs font-medium text-gray-500 mb-1.5 uppercase tracking-wider">
                   Date
                 </label>
                 <input
                   type="date"
                   name="date"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-gray-900 focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className="w-full bg-dark-700 border border-white/10 rounded-lg px-3 py-2.5 text-white focus:ring-2 focus:ring-accent/50 focus:border-accent/50 transition"
                 />
               </div>
               <div className="flex items-end">
                 <button
                   type="submit"
-                  className="w-full bg-orange-600 text-white font-semibold py-2.5 px-6 rounded-lg hover:bg-orange-700 transition cursor-pointer"
+                  className="w-full bg-gradient-to-r from-accent to-teal text-dark-950 font-bold py-2.5 px-6 rounded-lg hover:shadow-lg hover:shadow-accent/25 transition-all cursor-pointer"
                 >
                   Search Rides
                 </button>
@@ -77,35 +84,43 @@ export default function Home() {
       </section>
 
       {/* How it works */}
-      <section className="max-w-5xl mx-auto px-4 py-16">
-        <h2 className="text-2xl font-bold text-center mb-10">How It Works</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="text-center">
-            <div className="w-16 h-16 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
-              1
+      <section className="max-w-6xl mx-auto px-4 py-20">
+        <h2 className="text-2xl font-bold text-center mb-3 text-white">How It Works</h2>
+        <p className="text-gray-500 text-center mb-12">Three simple steps to your next ride</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {[
+            { num: "01", title: "Post or Search", desc: "Post your upcoming ride or search for someone going your way.", color: "accent" },
+            { num: "02", title: "Connect", desc: "Found a match? Call or WhatsApp them directly to plan the ride.", color: "teal" },
+            { num: "03", title: "Ride Together", desc: "Meet up, share the journey, split the fuel cost, make a friend.", color: "royal" },
+          ].map((step) => (
+            <div
+              key={step.num}
+              className="bg-dark-800/60 border border-white/5 rounded-2xl p-6 hover:border-white/10 transition group"
+            >
+              <div className={`text-${step.color} text-3xl font-bold mb-4 opacity-60 group-hover:opacity-100 transition`}>
+                {step.num}
+              </div>
+              <h3 className="font-semibold text-lg mb-2 text-white">{step.title}</h3>
+              <p className="text-gray-500 leading-relaxed">{step.desc}</p>
             </div>
-            <h3 className="font-semibold text-lg mb-2">Post or Search</h3>
-            <p className="text-gray-600">
-              Post your upcoming ride or search for someone going your way.
-            </p>
+          ))}
+        </div>
+      </section>
+
+      {/* Stats strip */}
+      <section className="border-t border-white/5">
+        <div className="max-w-6xl mx-auto px-4 py-12 grid grid-cols-3 gap-8 text-center">
+          <div>
+            <p className="text-3xl font-bold text-accent">10+</p>
+            <p className="text-gray-500 text-sm mt-1">Cities</p>
           </div>
-          <div className="text-center">
-            <div className="w-16 h-16 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
-              2
-            </div>
-            <h3 className="font-semibold text-lg mb-2">Connect</h3>
-            <p className="text-gray-600">
-              Found a match? Call or WhatsApp them directly to plan the ride.
-            </p>
+          <div>
+            <p className="text-3xl font-bold text-teal">90+</p>
+            <p className="text-gray-500 text-sm mt-1">Active Rides</p>
           </div>
-          <div className="text-center">
-            <div className="w-16 h-16 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
-              3
-            </div>
-            <h3 className="font-semibold text-lg mb-2">Ride Together</h3>
-            <p className="text-gray-600">
-              Meet up, share the journey, split the fuel cost, make a friend.
-            </p>
+          <div>
+            <p className="text-3xl font-bold text-royal">50+</p>
+            <p className="text-gray-500 text-sm mt-1">Riders</p>
           </div>
         </div>
       </section>

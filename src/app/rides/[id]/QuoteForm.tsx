@@ -47,17 +47,17 @@ export default function QuoteForm({
           onChange={(e) => setAmount(Number(e.target.value))}
           min={minAmount}
           max={maxAmount}
-          className="w-full border border-blue-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          className="w-full bg-dark-700 border border-royal/30 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-royal/50 focus:border-royal/50 transition"
         />
       </div>
       <button
         type="submit"
         disabled={loading}
-        className="bg-blue-600 text-white font-medium px-5 py-2 rounded-lg hover:bg-blue-700 transition disabled:opacity-50 cursor-pointer"
+        className="bg-royal text-white font-medium px-5 py-2 rounded-lg hover:bg-royal/80 transition disabled:opacity-50 cursor-pointer"
       >
         {loading ? "Sending..." : "Send Quote"}
       </button>
-      {error && <p className="text-red-600 text-sm">{error}</p>}
+      {error && <p className="text-red-400 text-sm">{error}</p>}
     </form>
   );
 }
