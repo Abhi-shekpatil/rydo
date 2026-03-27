@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getSessionUser } from "@/lib/auth";
+import { getUnreadCount } from "@/lib/messages";
 import LogoutButton from "./LogoutButton";
 import "./globals.css";
 
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
 
 async function Navbar() {
   const user = await getSessionUser();
+  const unread = user ? await getUnreadCount(user.id) : 0;
 
   return (
     <nav className="bg-dark-900/80 backdrop-blur-xl border-b border-white/5 sticky top-0 z-50">
@@ -36,9 +38,14 @@ async function Navbar() {
               </a>
               <a
                 href="/profile"
-                className="text-gray-400 hover:text-white transition"
+                className="relative text-gray-400 hover:text-white transition"
               >
                 {user.name.split(" ")[0]}
+                {unread > 0 && (
+                  <span className="absolute -top-1.5 -right-2.5 bg-royal text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                    {unread > 9 ? "9+" : unread}
+                  </span>
+                )}
               </a>
               <LogoutButton />
             </>

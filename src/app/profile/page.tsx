@@ -2,6 +2,7 @@ import { getSessionUser } from "@/lib/auth";
 import { toPublicUser, getAverageRating, getUserById } from "@/lib/users";
 import { getRidesByUserId } from "@/lib/db";
 import { getReviewsForUser } from "@/lib/reviews";
+import { getConversationList } from "@/lib/messages";
 import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
@@ -22,6 +23,8 @@ export default async function ProfilePage() {
       reviewerNames[review.from_user_id] = reviewer?.name || "Unknown";
     }
   }
+
+  const conversations = await getConversationList(user.id);
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
@@ -109,11 +112,11 @@ export default async function ProfilePage() {
         <span className="text-gray-600 font-normal ml-2">({reviews.length})</span>
       </h2>
       {reviews.length === 0 ? (
-        <div className="bg-dark-800/40 rounded-2xl border border-white/5 p-8 text-center text-gray-500">
+        <div className="bg-dark-800/40 rounded-2xl border border-white/5 p-8 text-center text-gray-500 mb-8">
           No reviews yet.
         </div>
       ) : (
-        <div className="space-y-2">
+        <div className="space-y-2 mb-8">
           {reviews.map((review) => (
             <div key={review.id} className="bg-dark-800/60 rounded-xl border border-white/5 p-4">
               <div className="flex items-center justify-between mb-2">
@@ -125,6 +128,47 @@ export default async function ProfilePage() {
               </div>
               <p className="text-gray-500 text-sm">{review.comment}</p>
             </div>
+          ))}
+        </div>
+      )}
+
+      {/* Conversations */}
+      <h2 className="text-xl font-bold text-white mb-4">
+        Messages
+        <span className="text-gray-600 font-normal ml-2">({conversations.length})</span>
+      </h2>
+      {conversations.length === 0 ? (
+        <div className="bg-dark-800/40 rounded-2xl border border-white/5 p-8 text-center text-gray-500">
+          No conversations yet.
+        </div>
+      ) : (
+        <div className="space-y-2">
+          {conversations.map((conv) => (
+            <a
+              key={`${conv.ride_id}-${conv.other_user_id}`}
+              href={`/chat/${conv.ride_id}/${conv.other_user_id}`}
+              className="flex items-center justify-between bg-dark-800/60 rounded-xl border border-white/5 hover:border-royal/20 transition-all p-4"
+            >
+              <div>
+                <p className="font-semibold text-white">{conv.other_user_name}</p>
+                <p className="text-xs text-gray-500 mt-0.5">
+                  {conv.from_city} → {conv.to_city}
+                </p>
+                <p className="text-sm text-gray-500 mt-1 truncate max-w-xs">{conv.last_message}</p>
+              </div>
+              <div className="text-right flex flex-col items-end gap-1">
+                {conv.unread_count > 0 && (
+                  <span className="bg-royal text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
+                    {conv.unread_count}
+                  </span>
+                )}
+                <span className="text-xs text-gray-600">
+                  {new Date(conv.last_message_at).toLocaleDateString("en-IN", {
+                    month: "short", day: "numeric",
+                  })}
+                </span>
+              </div>
+            </a>
           ))}
         </div>
       )}

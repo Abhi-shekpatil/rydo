@@ -128,7 +128,7 @@ export default async function RideDetailPage({ params }: Props) {
           </div>
         )}
 
-        {/* Contact Buttons */}
+        {/* Contact + Chat Buttons */}
         <div className="flex flex-col sm:flex-row gap-3">
           <a
             href={`tel:${ride.phone}`}
@@ -145,6 +145,33 @@ export default async function RideDetailPage({ params }: Props) {
             WhatsApp
           </a>
         </div>
+
+        {/* Chat Button */}
+        {currentUser && !isOwnRide && (
+          <a
+            href={`/chat/${ride.id}/${ride.rider_id}`}
+            className="mt-3 w-full text-center bg-royal/10 text-royal border border-royal/20 font-semibold py-3 rounded-xl hover:bg-royal/20 transition block"
+          >
+            💬 Chat with {ride.name}
+          </a>
+        )}
+
+        {/* Rider sees chat links per quoter */}
+        {isOwnRide && quotes.length > 0 && (
+          <div className="mt-3 space-y-2">
+            <p className="text-xs text-gray-500 uppercase tracking-wider">Open chat with</p>
+            {quotes.map((q) => (
+              <a
+                key={q.user_id}
+                href={`/chat/${ride.id}/${q.user_id}`}
+                className="flex items-center justify-between bg-dark-700/60 border border-white/5 hover:border-royal/20 rounded-xl px-4 py-2.5 transition group"
+              >
+                <span className="text-gray-300 text-sm">{q.user_id}</span>
+                <span className="text-royal text-xs group-hover:translate-x-1 transition-transform">Chat →</span>
+              </a>
+            ))}
+          </div>
+        )}
 
         {!currentUser && (
           <p className="text-center text-sm text-gray-600 mt-4">
