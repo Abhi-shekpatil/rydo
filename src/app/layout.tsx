@@ -77,7 +77,7 @@ export default function RootLayout({
         {/* SOS Button */}
         <a
           href="tel:+916260718348"
-          className="fixed bottom-6 right-6 bg-red-600/90 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg shadow-red-900/40 hover:bg-red-500 hover:scale-105 transition-all text-xs font-bold z-50 ring-2 ring-red-500/30"
+          className="fixed bottom-6 left-6 bg-red-600/90 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg shadow-red-900/40 hover:bg-red-500 hover:scale-105 transition-all text-xs font-bold z-50 ring-2 ring-red-500/30"
           title="Emergency SOS"
         >
           SOS
