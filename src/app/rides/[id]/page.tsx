@@ -23,10 +23,6 @@ export default async function RideDetailPage({ params }: Props) {
   const minQuote = Math.ceil(ride.fuel_cost * 0.8);
   const quotes = ride.quotes || [];
 
-  const whatsappLink = `https://wa.me/91${ride.phone}?text=${encodeURIComponent(
-    `Hi ${ride.name}, I saw your ride from ${ride.from_city} to ${ride.to_city} on Rydo. I'm interested in joining!`
-  )}`;
-
   const isOwnRide = currentUser?.id === ride.rider_id;
   const hasQuoted = currentUser
     ? quotes.some((q) => q.user_id === currentUser.id)
@@ -74,7 +70,10 @@ export default async function RideDetailPage({ params }: Props) {
           </div>
           <div className="bg-dark-700/80 border border-white/5 rounded-xl p-4">
             <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Phone</p>
-            <p className="font-semibold text-white">{ride.phone}</p>
+            <p className="font-semibold text-white tracking-widest">
+              {ride.phone.slice(0, 2)}{"•".repeat(ride.phone.length - 4)}{ride.phone.slice(-2)}
+            </p>
+            <p className="text-xs text-gray-600 mt-0.5">Share contact via chat to reveal</p>
           </div>
           {rider?.dl_number && (
             <div className="bg-dark-700/80 border border-white/5 rounded-xl p-4 col-span-2">
@@ -128,29 +127,11 @@ export default async function RideDetailPage({ params }: Props) {
           </div>
         )}
 
-        {/* Contact + Chat Buttons */}
-        <div className="flex flex-col sm:flex-row gap-3">
-          <a
-            href={`tel:${ride.phone}`}
-            className="flex-1 text-center bg-gradient-to-r from-accent to-teal text-dark-950 font-bold py-3 rounded-xl hover:shadow-lg hover:shadow-accent/25 transition-all"
-          >
-            Call {ride.name}
-          </a>
-          <a
-            href={whatsappLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex-1 text-center bg-emerald-600/20 text-emerald-400 border border-emerald-500/20 font-semibold py-3 rounded-xl hover:bg-emerald-600/30 transition"
-          >
-            WhatsApp
-          </a>
-        </div>
-
-        {/* Chat Button */}
+        {/* Chat Button (contact sharing happens inside chat) */}
         {currentUser && !isOwnRide && (
           <a
             href={`/chat/${ride.id}/${ride.rider_id}`}
-            className="mt-3 w-full text-center bg-royal/10 text-royal border border-royal/20 font-semibold py-3 rounded-xl hover:bg-royal/20 transition block"
+            className="w-full text-center bg-gradient-to-r from-accent to-teal text-dark-950 font-bold py-3 rounded-xl hover:shadow-lg hover:shadow-accent/25 transition-all block"
           >
             💬 Chat with {ride.name}
           </a>

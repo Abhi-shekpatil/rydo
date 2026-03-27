@@ -42,6 +42,8 @@ export default async function ChatPage({ params }: Props) {
       <ChatWindow
         initialMessages={initialMessages}
         currentUserId={currentUser.id}
+        currentUserPhone={currentUser.phone}
+        currentUserName={currentUser.name}
         rideId={rideId}
         otherUserId={otherUserId}
         otherUserName={otherUser.name}
