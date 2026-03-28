@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getUserByPhone, addUser, toPublicUser } from "@/lib/users";
 import { setSession } from "@/lib/auth";
+import bcrypt from "bcryptjs";
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
@@ -19,10 +20,12 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Phone number already registered" }, { status: 409 });
   }
 
+  const hashedPassword = await bcrypt.hash(password, 12);
+
   const user = await addUser({
     name,
     phone,
-    password,
+    password: hashedPassword,
     aadhaar_number: aadhaarNumber,
     dl_number: dlNumber,
     bike_model: bikeModel || "",
