@@ -23,10 +23,21 @@ export default async function RideDetailPage({ params }: Props) {
   const minQuote = Math.ceil(ride.fuel_cost * 0.8);
   const quotes = ride.quotes || [];
 
+  // Fetch names for all quoters
+  const quoterNames: Record<string, string> = {};
+  await Promise.all(
+    quotes.map(async (q) => {
+      const u = await getUserById(q.user_id);
+      quoterNames[q.user_id] = u?.name || "Unknown";
+    })
+  );
+
   const isOwnRide = currentUser?.id === ride.rider_id;
-  const hasQuoted = currentUser
-    ? quotes.some((q) => q.user_id === currentUser.id)
-    : false;
+  const myQuote = currentUser ? quotes.find((q) => q.user_id === currentUser.id) : null;
+  const hasQuoted = !!myQuote;
+  const acceptedQuote = quotes.find((q) => q.status === "accepted");
+  const pendingCount = quotes.filter((q) => q.status === "pending").length;
+  const isConfirmed = !!acceptedQuote;
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
@@ -35,11 +46,26 @@ export default async function RideDetailPage({ params }: Props) {
       </a>
 
       <div className="bg-dark-800/60 rounded-2xl border border-white/5 p-6">
-        {/* Route Header */}
-        <div className="flex items-center gap-3 text-2xl font-bold mb-1">
-          <span className="text-white">{ride.from_city}</span>
-          <span className="text-accent">→</span>
-          <span className="text-white">{ride.to_city}</span>
+        {/* Route Header + Status */}
+        <div className="flex items-start justify-between gap-3 mb-1">
+          <div className="flex items-center gap-3 text-2xl font-bold">
+            <span className="text-white">{ride.from_city}</span>
+            <span className="text-accent">→</span>
+            <span className="text-white">{ride.to_city}</span>
+          </div>
+          {isConfirmed ? (
+            <span className="shrink-0 bg-teal/15 text-teal border border-teal/25 text-xs font-bold px-3 py-1.5 rounded-full">
+              ✓ Confirmed
+            </span>
+          ) : pendingCount > 0 && isOwnRide ? (
+            <span className="shrink-0 bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 text-xs font-bold px-3 py-1.5 rounded-full">
+              {pendingCount} quote{pendingCount > 1 ? "s" : ""} waiting
+            </span>
+          ) : (
+            <span className="shrink-0 bg-royal/10 text-royal border border-royal/20 text-xs font-bold px-3 py-1.5 rounded-full">
+              Open
+            </span>
+          )}
         </div>
         <p className="text-gray-500 mb-6">
           {new Date(ride.date).toLocaleDateString("en-IN", {
@@ -47,6 +73,27 @@ export default async function RideDetailPage({ params }: Props) {
           })}{" "}
           at {ride.time}
         </p>
+
+        {/* Confirmed banner */}
+        {isConfirmed && (
+          <div className="bg-teal/10 border border-teal/20 rounded-xl px-4 py-3 mb-6 flex items-center gap-3">
+            <span className="text-2xl">🎉</span>
+            <div>
+              <p className="font-semibold text-teal">
+                {isOwnRide
+                  ? `Ride confirmed with ${quoterNames[acceptedQuote!.user_id]}!`
+                  : myQuote?.status === "accepted"
+                  ? "Your quote was accepted — ride confirmed!"
+                  : `This ride is confirmed with another co-rider.`}
+              </p>
+              {isOwnRide && (
+                <p className="text-xs text-teal/70 mt-0.5">
+                  ₹{acceptedQuote!.amount} agreed · Chat below to coordinate
+                </p>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* Details Grid */}
         <div className="grid grid-cols-2 gap-3 mb-6">
@@ -93,8 +140,8 @@ export default async function RideDetailPage({ params }: Props) {
           </div>
         )}
 
-        {/* Quote Section */}
-        {currentUser && !isOwnRide && !hasQuoted && (
+        {/* Pillion: quote form or status */}
+        {currentUser && !isOwnRide && !hasQuoted && !isConfirmed && (
           <div className="bg-royal/5 border border-royal/15 rounded-xl p-4 mb-6">
             <p className="font-medium text-royal mb-2">Send a fuel quote to join this ride</p>
             <p className="text-sm text-gray-500 mb-3">
@@ -104,24 +151,67 @@ export default async function RideDetailPage({ params }: Props) {
           </div>
         )}
 
-        {hasQuoted && (
-          <div className="bg-teal/5 border border-teal/15 rounded-xl p-4 mb-6 text-teal">
-            You have already sent a quote for this ride.
+        {currentUser && !isOwnRide && hasQuoted && (
+          <div className={`rounded-xl p-4 mb-6 flex items-center gap-3 ${
+            myQuote?.status === "accepted"
+              ? "bg-teal/10 border border-teal/20"
+              : myQuote?.status === "rejected"
+              ? "bg-red-500/10 border border-red-500/20"
+              : "bg-yellow-500/10 border border-yellow-500/20"
+          }`}>
+            <span className="text-xl">
+              {myQuote?.status === "accepted" ? "✅" : myQuote?.status === "rejected" ? "❌" : "⏳"}
+            </span>
+            <div>
+              <p className={`font-semibold ${
+                myQuote?.status === "accepted" ? "text-teal"
+                : myQuote?.status === "rejected" ? "text-red-400"
+                : "text-yellow-400"
+              }`}>
+                {myQuote?.status === "accepted"
+                  ? "Quote accepted — your ride is confirmed!"
+                  : myQuote?.status === "rejected"
+                  ? "Your quote was not accepted this time."
+                  : "Quote sent — waiting for rider to respond"}
+              </p>
+              <p className="text-xs text-gray-500 mt-0.5">Your offer: ₹{myQuote?.amount}</p>
+            </div>
           </div>
         )}
 
+        {/* Rider: quotes panel */}
         {isOwnRide && quotes.length > 0 && (
           <div className="mb-6">
-            <p className="font-medium text-white mb-3">Quotes received ({quotes.length})</p>
+            <p className="font-medium text-white mb-3">
+              Quotes received
+              <span className="text-gray-600 font-normal ml-1.5">({quotes.length})</span>
+            </p>
             <div className="space-y-2">
               {quotes.map((q) => (
-                <div key={q.user_id} className="bg-dark-700/80 border border-white/5 rounded-xl p-3 flex items-center justify-between">
-                  <div>
-                    <p className="font-medium text-gray-300">{q.user_id}</p>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="text-accent font-bold text-lg">₹{q.amount}</span>
-                    <QuoteActions rideId={ride.id} userId={q.user_id} currentStatus={q.status} />
+                <div key={q.user_id} className={`rounded-xl border p-4 ${
+                  q.status === "accepted"
+                    ? "bg-teal/5 border-teal/20"
+                    : q.status === "rejected"
+                    ? "bg-dark-700/40 border-white/5 opacity-60"
+                    : "bg-dark-700/80 border-white/5"
+                }`}>
+                  <div className="flex items-center justify-between gap-3 flex-wrap">
+                    <div>
+                      <p className="font-semibold text-white">{quoterNames[q.user_id]}</p>
+                      <p className="text-accent font-bold text-lg">₹{q.amount}</p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <QuoteActions rideId={ride.id} userId={q.user_id} currentStatus={q.status} />
+                      <a
+                        href={`/chat/${ride.id}/${q.user_id}`}
+                        className="w-8 h-8 flex items-center justify-center rounded-lg border border-royal/20 text-royal hover:bg-royal/10 transition"
+                        title={`Chat with ${quoterNames[q.user_id]}`}
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        </svg>
+                      </a>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -129,7 +219,13 @@ export default async function RideDetailPage({ params }: Props) {
           </div>
         )}
 
-        {/* Chat Button (contact sharing happens inside chat) */}
+        {isOwnRide && quotes.length === 0 && (
+          <div className="bg-dark-700/40 border border-white/5 rounded-xl p-4 mb-6 text-center text-gray-600 text-sm">
+            No quotes yet. Share your ride to find a co-rider!
+          </div>
+        )}
+
+        {/* Chat Button for pillion */}
         {currentUser && !isOwnRide && (
           <a
             href={`/chat/${ride.id}/${ride.rider_id}`}
@@ -137,23 +233,6 @@ export default async function RideDetailPage({ params }: Props) {
           >
             💬 Chat with {ride.name}
           </a>
-        )}
-
-        {/* Rider sees chat links per quoter */}
-        {isOwnRide && quotes.length > 0 && (
-          <div className="mt-3 space-y-2">
-            <p className="text-xs text-gray-500 uppercase tracking-wider">Open chat with</p>
-            {quotes.map((q) => (
-              <a
-                key={q.user_id}
-                href={`/chat/${ride.id}/${q.user_id}`}
-                className="flex items-center justify-between bg-dark-700/60 border border-white/5 hover:border-royal/20 rounded-xl px-4 py-2.5 transition group"
-              >
-                <span className="text-gray-300 text-sm">{q.user_id}</span>
-                <span className="text-royal text-xs group-hover:translate-x-1 transition-transform">Chat →</span>
-              </a>
-            ))}
-          </div>
         )}
 
         {!currentUser && (

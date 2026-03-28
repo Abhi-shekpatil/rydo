@@ -114,11 +114,25 @@ export default async function RidesPage({ searchParams }: Props) {
               className="block bg-dark-800/60 rounded-xl border border-white/5 hover:border-accent/20 hover:bg-dark-800 transition-all p-5 group"
             >
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 text-lg font-semibold mb-1">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 text-lg font-semibold mb-1 flex-wrap">
                     <span className="text-white">{ride.from_city}</span>
                     <span className="text-accent group-hover:translate-x-1 transition-transform inline-block">→</span>
                     <span className="text-white">{ride.to_city}</span>
+                    {(() => {
+                      const quotes = ride.quotes || [];
+                      const accepted = quotes.some((q) => q.status === "accepted");
+                      const pending = quotes.filter((q) => q.status === "pending").length;
+                      if (accepted) return (
+                        <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-teal/15 text-teal border border-teal/25">✓ Confirmed</span>
+                      );
+                      if (pending > 0) return (
+                        <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-yellow-500/10 text-yellow-400 border border-yellow-500/20">{pending} quote{pending > 1 ? "s" : ""}</span>
+                      );
+                      return (
+                        <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-royal/10 text-royal border border-royal/20">Open</span>
+                      );
+                    })()}
                   </div>
                   <div className="text-sm text-gray-500">
                     {new Date(ride.date).toLocaleDateString("en-IN", {
@@ -127,7 +141,7 @@ export default async function RidesPage({ searchParams }: Props) {
                     at {ride.time}
                   </div>
                 </div>
-                <div className="flex items-center gap-3 text-sm">
+                <div className="flex items-center gap-3 text-sm flex-wrap">
                   <span className="text-base" title={ride.vehicle_type === "car" ? "Car" : "Bike"}>
                     {ride.vehicle_type === "car" ? "🚗" : "🏍️"}
                   </span>
