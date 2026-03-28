@@ -63,17 +63,24 @@ async function Navbar() {
                 </span>
               </div>
 
-              <a
-                href="/profile"
-                className="relative text-gray-400 hover:text-white transition px-1"
-              >
-                {user.name.split(" ")[0]}
-                {unread > 0 && (
-                  <span className="absolute -top-1.5 -right-2.5 bg-royal text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
-                    {unread > 9 ? "9+" : unread}
-                  </span>
-                )}
-              </a>
+              <div className="relative group">
+                <a
+                  href="/profile"
+                  className="relative w-9 h-9 flex items-center justify-center rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+                  </svg>
+                  {unread > 0 && (
+                    <span className="absolute top-0.5 right-0.5 bg-royal text-white text-[9px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center">
+                      {unread > 9 ? "9+" : unread}
+                    </span>
+                  )}
+                </a>
+                <span className="pointer-events-none absolute top-full left-1/2 -translate-x-1/2 mt-2 px-2 py-1 bg-dark-700 border border-white/10 text-white text-xs rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity z-50">
+                  {user.name.split(" ")[0]}
+                </span>
+              </div>
               <LogoutButton />
             </>
           ) : (
