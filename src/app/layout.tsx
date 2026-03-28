@@ -37,15 +37,6 @@ async function Navbar() {
             </span>
           </div>
 
-          {/* SOS */}
-          <a
-            href="tel:+916260718348"
-            title="Emergency SOS"
-            className="bg-red-600/80 hover:bg-red-500 text-white text-[11px] font-bold px-2.5 py-1 rounded-md transition ring-1 ring-red-500/40"
-          >
-            SOS
-          </a>
-
           {user ? (
             <>
               {/* Post a ride icon */}
@@ -63,13 +54,14 @@ async function Navbar() {
                 </span>
               </div>
 
+              {/* Chat icon */}
               <div className="relative group">
                 <a
                   href="/profile"
-                  className="relative w-9 h-9 flex items-center justify-center rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition"
+                  className="relative w-9 h-9 flex items-center justify-center rounded-lg text-gray-400 hover:text-royal hover:bg-royal/10 transition"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
                   </svg>
                   {unread > 0 && (
                     <span className="absolute top-0.5 right-0.5 bg-royal text-white text-[9px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center">
@@ -78,9 +70,34 @@ async function Navbar() {
                   )}
                 </a>
                 <span className="pointer-events-none absolute top-full left-1/2 -translate-x-1/2 mt-2 px-2 py-1 bg-dark-700 border border-white/10 text-white text-xs rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity z-50">
+                  Messages
+                </span>
+              </div>
+
+              {/* SOS */}
+              <a
+                href="tel:+916260718348"
+                title="Emergency SOS"
+                className="bg-red-600/80 hover:bg-red-500 text-white text-[11px] font-bold px-2.5 py-1 rounded-md transition ring-1 ring-red-500/40"
+              >
+                SOS
+              </a>
+
+              {/* Profile icon */}
+              <div className="relative group">
+                <a
+                  href="/profile"
+                  className="w-9 h-9 flex items-center justify-center rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+                  </svg>
+                </a>
+                <span className="pointer-events-none absolute top-full left-1/2 -translate-x-1/2 mt-2 px-2 py-1 bg-dark-700 border border-white/10 text-white text-xs rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity z-50">
                   {user.name.split(" ")[0]}
                 </span>
               </div>
+
               <LogoutButton />
             </>
           ) : (
