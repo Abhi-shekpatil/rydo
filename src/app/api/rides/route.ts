@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
   }
 
   const body = await request.json();
-  const { fromCity, toCity, date, time, fuelCost, note } = body;
+  const { fromCity, toCity, date, time, fuelCost, vehicleType, note } = body;
 
   if (!fromCity || !toCity || !date || !time || !fuelCost) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -36,6 +36,7 @@ export async function POST(request: NextRequest) {
     date,
     time,
     bike_model: user.bike_model,
+    vehicle_type: vehicleType === "car" ? "car" : "bike",
     seats: 1,
     fuel_cost: Number(fuelCost),
     note: note || "",

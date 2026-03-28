@@ -19,6 +19,7 @@ export interface Ride {
   date: string;
   time: string;
   bike_model: string;
+  vehicle_type: "bike" | "car";
   seats: number;
   fuel_cost: number;
   note: string;
@@ -49,11 +50,12 @@ export async function addRide(ride: Omit<Ride, "id" | "created_at" | "quotes">):
   return data;
 }
 
-export async function searchRides(from?: string, to?: string, date?: string): Promise<Ride[]> {
+export async function searchRides(from?: string, to?: string, date?: string, vehicleType?: string): Promise<Ride[]> {
   let query = supabase.from("rides").select("*, quotes(*)").order("created_at", { ascending: false });
   if (from) query = query.ilike("from_city", from);
   if (to) query = query.ilike("to_city", to);
   if (date) query = query.eq("date", date);
+  if (vehicleType && vehicleType !== "all") query = query.eq("vehicle_type", vehicleType);
   const { data } = await query;
   return data || [];
 }

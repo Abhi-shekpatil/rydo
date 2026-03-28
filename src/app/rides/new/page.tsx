@@ -29,6 +29,7 @@ export default function NewRidePage() {
       date: form.get("date"),
       time: form.get("time"),
       fuelCost: Number(form.get("fuelCost")),
+      vehicleType: form.get("vehicleType") || "bike",
       note: form.get("note"),
     };
 
@@ -70,6 +71,25 @@ export default function NewRidePage() {
         {error && (
           <div className="bg-red-500/10 text-red-400 border border-red-500/20 px-4 py-3 rounded-xl text-sm">{error}</div>
         )}
+
+        {/* Vehicle type */}
+        <div>
+          <label className="block text-xs font-medium text-gray-500 mb-2 uppercase tracking-wider">Vehicle Type *</label>
+          <div className="grid grid-cols-2 gap-3">
+            {(["bike", "car"] as const).map((type) => (
+              <label key={type} className="relative cursor-pointer">
+                <input type="radio" name="vehicleType" value={type} defaultChecked={type === "bike"} className="peer sr-only" />
+                <div className="flex items-center gap-3 bg-dark-700 border border-white/10 rounded-xl px-4 py-3 peer-checked:border-accent/50 peer-checked:bg-accent/5 transition">
+                  <span className="text-2xl">{type === "bike" ? "🏍️" : "🚗"}</span>
+                  <div>
+                    <p className="font-semibold text-white capitalize">{type}</p>
+                    <p className="text-xs text-gray-500">{type === "bike" ? "Pillion / co-rider" : "Co-passengers"}</p>
+                  </div>
+                </div>
+              </label>
+            ))}
+          </div>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>

@@ -21,13 +21,23 @@ async function Navbar() {
           <span className="text-accent">Ry</span>
           <span className="text-white">do</span>
         </a>
-        <div className="flex items-center gap-3 text-sm font-medium">
-          <a
-            href="/rides"
-            className="text-gray-400 hover:text-accent transition px-3 py-1.5 hidden sm:inline"
-          >
-            Browse Rides
-          </a>
+        <div className="flex items-center gap-2 text-sm font-medium">
+          {/* Search rides icon */}
+          <div className="relative group">
+            <a
+              href="/rides"
+              className="w-9 h-9 flex items-center justify-center rounded-lg text-gray-400 hover:text-accent hover:bg-accent/10 transition"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-4.5 h-4.5" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+              </svg>
+            </a>
+            <span className="pointer-events-none absolute top-full left-1/2 -translate-x-1/2 mt-2 px-2 py-1 bg-dark-700 border border-white/10 text-white text-xs rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity z-50">
+              Search Rides
+            </span>
+          </div>
+
+          {/* SOS */}
           <a
             href="tel:+916260718348"
             title="Emergency SOS"
@@ -35,17 +45,27 @@ async function Navbar() {
           >
             SOS
           </a>
+
           {user ? (
             <>
-              <a
-                href="/rides/new"
-                className="bg-accent/10 text-accent border border-accent/20 px-4 py-2 rounded-lg hover:bg-accent/20 transition"
-              >
-                + Post a Ride
-              </a>
+              {/* Post a ride icon */}
+              <div className="relative group">
+                <a
+                  href="/rides/new"
+                  className="w-9 h-9 flex items-center justify-center rounded-lg bg-accent/10 text-accent border border-accent/20 hover:bg-accent/20 transition"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 5v14M5 12h14"/>
+                  </svg>
+                </a>
+                <span className="pointer-events-none absolute top-full left-1/2 -translate-x-1/2 mt-2 px-2 py-1 bg-dark-700 border border-white/10 text-white text-xs rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity z-50">
+                  Post a Ride
+                </span>
+              </div>
+
               <a
                 href="/profile"
-                className="relative text-gray-400 hover:text-white transition"
+                className="relative text-gray-400 hover:text-white transition px-1"
               >
                 {user.name.split(" ")[0]}
                 {unread > 0 && (

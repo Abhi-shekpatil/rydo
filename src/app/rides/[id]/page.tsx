@@ -60,7 +60,9 @@ export default async function RideDetailPage({ params }: Props) {
             )}
           </div>
           <div className="bg-dark-700/80 border border-white/5 rounded-xl p-4">
-            <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Bike</p>
+            <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">
+              {ride.vehicle_type === "car" ? "🚗 Car" : "🏍️ Bike"}
+            </p>
             <p className="font-semibold text-white">{ride.bike_model || "Not specified"}</p>
           </div>
           <div className="bg-dark-700/80 border border-white/5 rounded-xl p-4">

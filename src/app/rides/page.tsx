@@ -4,19 +4,31 @@ import { cities } from "@/lib/cities";
 export const dynamic = "force-dynamic";
 
 interface Props {
-  searchParams: Promise<{ from?: string; to?: string; date?: string }>;
+  searchParams: Promise<{ from?: string; to?: string; date?: string; vehicle?: string }>;
 }
 
 export default async function RidesPage({ searchParams }: Props) {
   const params = await searchParams;
-  const rides = await searchRides(params.from, params.to, params.date);
-  const hasFilters = params.from || params.to || params.date;
+  const rides = await searchRides(params.from, params.to, params.date, params.vehicle);
+  const hasFilters = params.from || params.to || params.date || params.vehicle;
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       {/* Filters */}
       <form method="GET" className="bg-dark-800/60 backdrop-blur-sm rounded-2xl border border-white/5 p-5 mb-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+          <div>
+            <label className="block text-xs font-medium text-gray-500 mb-1.5 uppercase tracking-wider">Vehicle</label>
+            <select
+              name="vehicle"
+              defaultValue={params.vehicle || "all"}
+              className="w-full bg-dark-700 border border-white/10 rounded-lg px-3 py-2.5 text-white focus:ring-2 focus:ring-accent/50 transition"
+            >
+              <option value="all">🚗🏍️ All</option>
+              <option value="bike">🏍️ Bike</option>
+              <option value="car">🚗 Car</option>
+            </select>
+          </div>
           <div>
             <label className="block text-xs font-medium text-gray-500 mb-1.5 uppercase tracking-wider">From</label>
             <select
@@ -52,7 +64,7 @@ export default async function RidesPage({ searchParams }: Props) {
               className="w-full bg-dark-700 border border-white/10 rounded-lg px-3 py-2.5 text-white focus:ring-2 focus:ring-accent/50 transition"
             />
           </div>
-          <div className="flex items-end gap-2">
+          <div className="flex items-end gap-2 col-span-2 md:col-span-1">
             <button
               type="submit"
               className="flex-1 bg-gradient-to-r from-accent to-teal text-dark-950 font-bold py-2.5 px-4 rounded-lg hover:shadow-lg hover:shadow-accent/25 transition-all cursor-pointer"
@@ -116,8 +128,11 @@ export default async function RidesPage({ searchParams }: Props) {
                   </div>
                 </div>
                 <div className="flex items-center gap-3 text-sm">
+                  <span className="text-base" title={ride.vehicle_type === "car" ? "Car" : "Bike"}>
+                    {ride.vehicle_type === "car" ? "🚗" : "🏍️"}
+                  </span>
                   <span className="bg-dark-700 border border-white/5 px-3 py-1 rounded-full text-gray-400">
-                    {ride.bike_model || "Bike"}
+                    {ride.bike_model || (ride.vehicle_type === "car" ? "Car" : "Bike")}
                   </span>
                   <span className="bg-accent/10 text-accent border border-accent/20 px-3 py-1 rounded-full font-semibold">
                     ₹{ride.fuel_cost}
