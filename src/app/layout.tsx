@@ -24,9 +24,16 @@ async function Navbar() {
         <div className="flex items-center gap-3 text-sm font-medium">
           <a
             href="/rides"
-            className="text-gray-400 hover:text-accent transition px-3 py-1.5"
+            className="text-gray-400 hover:text-accent transition px-3 py-1.5 hidden sm:inline"
           >
             Browse Rides
+          </a>
+          <a
+            href="tel:+916260718348"
+            title="Emergency SOS"
+            className="bg-red-600/80 hover:bg-red-500 text-white text-[11px] font-bold px-2.5 py-1 rounded-md transition ring-1 ring-red-500/40"
+          >
+            SOS
           </a>
           {user ? (
             <>
@@ -73,15 +80,6 @@ export default function RootLayout({
       <body className="min-h-screen">
         <Navbar />
         <main>{children}</main>
-
-        {/* SOS Button */}
-        <a
-          href="tel:+916260718348"
-          className="fixed bottom-6 left-6 bg-red-600/90 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg shadow-red-900/40 hover:bg-red-500 hover:scale-105 transition-all text-xs font-bold z-50 ring-2 ring-red-500/30"
-          title="Emergency SOS"
-        >
-          SOS
-        </a>
       </body>
     </html>
   );

@@ -129,26 +129,35 @@ export default function ChatWindow({
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="bg-dark-800/80 border-b border-white/5 px-4 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <a href="/rides" className="text-gray-500 hover:text-accent transition text-sm">←</a>
-          <div>
-            <p className="font-semibold text-white">{otherUserName}</p>
-            <p className="text-xs text-gray-500">{rideSummary}</p>
+      <div className="bg-dark-800/80 border-b border-white/5 px-4 py-3 flex items-center justify-between gap-2">
+        <div className="flex items-center gap-3 min-w-0">
+          <a href="/profile" className="text-gray-500 hover:text-accent transition text-sm shrink-0">←</a>
+          <div className="min-w-0">
+            <p className="font-semibold text-white truncate">{otherUserName}</p>
+            <p className="text-xs text-gray-500 truncate">{rideSummary}</p>
           </div>
         </div>
-        <button
-          onClick={handleShareContact}
-          disabled={sending || alreadySharedContact}
-          title={alreadySharedContact ? "Contact already shared" : "Share your phone number"}
-          className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition ${
-            alreadySharedContact
-              ? "border-white/5 text-gray-600 cursor-default"
-              : "border-teal/30 text-teal hover:bg-teal/10 cursor-pointer"
-          }`}
-        >
-          {alreadySharedContact ? "Contact Shared ✓" : "Share Contact"}
-        </button>
+        <div className="flex items-center gap-2 shrink-0">
+          <button
+            onClick={handleShareContact}
+            disabled={sending || alreadySharedContact}
+            title={alreadySharedContact ? "Contact already shared" : "Share your phone number"}
+            className={`text-xs font-semibold px-2.5 py-1.5 rounded-lg border transition ${
+              alreadySharedContact
+                ? "border-white/5 text-gray-600 cursor-default"
+                : "border-teal/30 text-teal hover:bg-teal/10 cursor-pointer"
+            }`}
+          >
+            {alreadySharedContact ? "Shared ✓" : "Share Contact"}
+          </button>
+          <a
+            href="tel:+916260718348"
+            title="Emergency SOS"
+            className="bg-red-600/80 hover:bg-red-500 text-white text-[11px] font-bold px-2.5 py-1.5 rounded-lg transition ring-1 ring-red-500/40"
+          >
+            SOS
+          </a>
+        </div>
       </div>
 
       {/* Messages */}
