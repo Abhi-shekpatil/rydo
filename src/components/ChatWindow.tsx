@@ -131,7 +131,7 @@ export default function ChatWindow({
       {/* Header */}
       <div className="bg-dark-800/80 border-b border-white/5 px-4 py-3 flex items-center justify-between gap-2">
         <div className="flex items-center gap-3 min-w-0">
-          <a href="/profile" className="text-gray-500 hover:text-accent transition text-sm shrink-0">←</a>
+          <a href="/messages" className="text-gray-500 hover:text-accent transition text-sm shrink-0">←</a>
           <div className="min-w-0">
             <p className="font-semibold text-white truncate">{otherUserName}</p>
             <p className="text-xs text-gray-500 truncate">{rideSummary}</p>
