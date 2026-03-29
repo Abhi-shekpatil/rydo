@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   title: "Rydo - Intercity Bike Ride Pooling",
   description:
     "Find a co-rider for your next intercity bike trip. Share the ride, split the cost, enjoy the journey.",
+  manifest: "/manifest.json",
 };
 
 async function Navbar() {
