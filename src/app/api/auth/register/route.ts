@@ -1,18 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getUserByPhone, addUser, toPublicUser } from "@/lib/users";
 import { setSession } from "@/lib/auth";
+import { verifyOTP } from "@/lib/otp";
 import bcrypt from "bcryptjs";
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const { name, phone, password, aadhaarNumber, dlNumber, bikeModel, city } = body;
+  const { name, phone, password, aadhaarNumber, dlNumber, bikeModel, city, otp } = body;
 
-  if (!name || !phone || !password || !aadhaarNumber || !dlNumber) {
+  if (!name || !phone || !password || !aadhaarNumber || !dlNumber || !otp) {
     return NextResponse.json({ error: "All fields are required" }, { status: 400 });
   }
 
   if (!/^\d{4}\s\d{4}\s\d{4}$/.test(aadhaarNumber)) {
     return NextResponse.json({ error: "Aadhaar must be in format: 1234 5678 9012" }, { status: 400 });
+  }
+
+  const otpValid = await verifyOTP(phone, otp, "register");
+  if (!otpValid) {
+    return NextResponse.json({ error: "Invalid or expired OTP" }, { status: 400 });
   }
 
   const existing = await getUserByPhone(phone);

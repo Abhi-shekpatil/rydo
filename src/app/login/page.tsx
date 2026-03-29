@@ -43,7 +43,12 @@ export default function LoginPage() {
 
       <form onSubmit={handleSubmit} className="bg-dark-800/60 rounded-2xl border border-white/5 p-6 space-y-4">
         {error && (
-          <div className="bg-red-500/10 text-red-400 border border-red-500/20 px-4 py-3 rounded-xl text-sm">{error}</div>
+          <div className="bg-red-500/10 text-red-400 border border-red-500/20 px-4 py-3 rounded-xl text-sm">
+            {error}{" "}
+            <a href="/forgot-password" className="underline font-medium hover:text-red-300 transition">
+              Forgot password?
+            </a>
+          </div>
         )}
 
         <div>
@@ -77,20 +82,14 @@ export default function LoginPage() {
           {loading ? "Logging in..." : "Login"}
         </button>
 
-        <p className="text-center text-sm text-gray-500">
-          Don&apos;t have an account?{" "}
-          <a href="/register" className="text-accent font-medium hover:underline">Register</a>
-        </p>
-      </form>
-
-      <div className="mt-6 bg-dark-800/40 border border-white/5 rounded-xl p-4 text-sm">
-        <p className="font-medium text-gray-400 mb-2">Demo accounts</p>
-        <div className="space-y-1 text-gray-500">
-          <p>Rahul: <span className="text-gray-300">9876543210</span> / <span className="text-gray-300">rahul123</span></p>
-          <p>Priya: <span className="text-gray-300">9988776655</span> / <span className="text-gray-300">priya123</span></p>
-          <p>Amit: <span className="text-gray-300">9123456789</span> / <span className="text-gray-300">amit123</span></p>
+        <div className="flex flex-col gap-2 text-sm text-center">
+          <a href="/forgot-password" className="text-accent font-medium hover:underline">Forgot password?</a>
+          <p className="text-gray-500">
+            Don&apos;t have an account?{" "}
+            <a href="/register" className="text-accent font-medium hover:underline">Register</a>
+          </p>
         </div>
-      </div>
+      </form>
     </div>
   );
 }

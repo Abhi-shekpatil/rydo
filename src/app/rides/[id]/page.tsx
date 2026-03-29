@@ -1,9 +1,11 @@
 import { getRideById } from "@/lib/db";
 import { getSessionUser } from "@/lib/auth";
 import { getUserById, getAverageRating } from "@/lib/users";
+import { hasReviewed } from "@/lib/reviews";
 import { notFound } from "next/navigation";
 import QuoteForm from "./QuoteForm";
 import QuoteActions from "./QuoteActions";
+import ReviewForm from "./ReviewForm";
 
 export const dynamic = "force-dynamic";
 
@@ -38,6 +40,26 @@ export default async function RideDetailPage({ params }: Props) {
   const acceptedQuote = quotes.find((q) => q.status === "accepted");
   const pendingCount = quotes.filter((q) => q.status === "pending").length;
   const isConfirmed = !!acceptedQuote;
+
+  // Review eligibility: ride must be past, ride confirmed, user was involved
+  const today = new Date(new Date().toDateString());
+  const rideIsPast = new Date(ride.date) < today;
+  const isAcceptedCo = myQuote?.status === "accepted";
+  let reviewTargetId: string | null = null;
+  let reviewTargetName: string | null = null;
+  let alreadyReviewed = false;
+
+  if (currentUser && rideIsPast && isConfirmed) {
+    if (isOwnRide && acceptedQuote) {
+      reviewTargetId = acceptedQuote.user_id;
+      reviewTargetName = quoterNames[acceptedQuote.user_id];
+      alreadyReviewed = await hasReviewed(currentUser.id, acceptedQuote.user_id, ride.id);
+    } else if (isAcceptedCo) {
+      reviewTargetId = ride.rider_id;
+      reviewTargetName = ride.name;
+      alreadyReviewed = await hasReviewed(currentUser.id, ride.rider_id, ride.id);
+    }
+  }
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
@@ -240,6 +262,20 @@ export default async function RideDetailPage({ params }: Props) {
             <a href="/login" className="text-accent font-medium hover:underline">Login</a>
             {" "}to send a fuel quote and join this ride.
           </p>
+        )}
+
+        {/* Review section */}
+        {reviewTargetId && reviewTargetName && (
+          <div className="border-t border-white/5 pt-5 mt-2">
+            <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">Leave a Review</p>
+            {alreadyReviewed ? (
+              <div className="bg-dark-700/40 border border-white/5 rounded-xl px-4 py-3 text-sm text-gray-500">
+                You have already reviewed {reviewTargetName} for this ride.
+              </div>
+            ) : (
+              <ReviewForm rideId={ride.id} toUserId={reviewTargetId} toUserName={reviewTargetName} />
+            )}
+          </div>
         )}
       </div>
     </div>

@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { getSessionUser } from "@/lib/auth";
 import { getUnreadCount } from "@/lib/messages";
+import { getUnreadNotificationCount } from "@/lib/notifications";
 import ProfileDropdown from "./ProfileDropdown";
+import NotificationBell from "./NotificationBell";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -13,6 +15,7 @@ export const metadata: Metadata = {
 async function Navbar() {
   const user = await getSessionUser();
   const unread = user ? await getUnreadCount(user.id) : 0;
+  const notifCount = user ? await getUnreadNotificationCount(user.id) : 0;
 
   return (
     <nav className="bg-dark-900/80 backdrop-blur-xl border-b border-white/5 sticky top-0 z-50">
@@ -54,6 +57,9 @@ async function Navbar() {
                 </span>
               </div>
 
+              {/* Notification bell */}
+              <NotificationBell initialCount={notifCount} />
+
               {/* Chat icon */}
               <div className="relative group">
                 <a
@@ -90,6 +96,26 @@ async function Navbar() {
   );
 }
 
+function Footer() {
+  return (
+    <footer className="border-t border-white/5 mt-20">
+      <div className="max-w-6xl mx-auto px-4 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div>
+          <span className="text-accent font-bold text-lg">Ry</span>
+          <span className="text-white font-bold text-lg">do</span>
+          <p className="text-gray-600 text-xs mt-1">India&apos;s intercity bike ride pooling</p>
+        </div>
+        <div className="flex items-center gap-6 text-sm text-gray-500">
+          <a href="/about" className="hover:text-white transition">About</a>
+          <a href="/terms" className="hover:text-white transition">Terms</a>
+          <a href="/privacy" className="hover:text-white transition">Privacy</a>
+        </div>
+        <p className="text-gray-600 text-xs">© {new Date().getFullYear()} Rydo. All rights reserved.</p>
+      </div>
+    </footer>
+  );
+}
+
 export default function RootLayout({
   children,
 }: {
@@ -97,9 +123,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="min-h-screen">
+      <body className="min-h-screen flex flex-col">
         <Navbar />
-        <main>{children}</main>
+        <main className="flex-1">{children}</main>
+        <Footer />
       </body>
     </html>
   );

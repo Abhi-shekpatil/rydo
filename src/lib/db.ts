@@ -28,9 +28,11 @@ export interface Ride {
 }
 
 export async function getAllRides(): Promise<Ride[]> {
+  const expiryDate = new Date(Date.now() - 45 * 24 * 60 * 60 * 1000).toISOString();
   const { data } = await supabase
     .from("rides")
     .select("*, quotes(*)")
+    .gte("created_at", expiryDate)
     .order("created_at", { ascending: false });
   return data || [];
 }
@@ -51,7 +53,8 @@ export async function addRide(ride: Omit<Ride, "id" | "created_at" | "quotes">):
 }
 
 export async function searchRides(from?: string, to?: string, date?: string, vehicleType?: string): Promise<Ride[]> {
-  let query = supabase.from("rides").select("*, quotes(*)").order("created_at", { ascending: false });
+  const expiryDate = new Date(Date.now() - 45 * 24 * 60 * 60 * 1000).toISOString();
+  let query = supabase.from("rides").select("*, quotes(*)").gte("created_at", expiryDate).order("created_at", { ascending: false });
   if (from) query = query.ilike("from_city", from);
   if (to) query = query.ilike("to_city", to);
   if (date) query = query.eq("date", date);

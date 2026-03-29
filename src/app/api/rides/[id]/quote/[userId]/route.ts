@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getRideById, updateQuoteStatus } from "@/lib/db";
 import { getSessionUser } from "@/lib/auth";
+import { createNotification } from "@/lib/notifications";
 
 export async function PATCH(
   request: NextRequest,
@@ -37,6 +38,11 @@ export async function PATCH(
 
   try {
     await updateQuoteStatus(id, userId, action);
+    const message =
+      action === "accepted"
+        ? `Your quote of ₹${quote.amount} was accepted for ${ride.from_city} → ${ride.to_city}`
+        : `Your quote was not accepted for ${ride.from_city} → ${ride.to_city}`;
+    await createNotification(userId, action, message, id);
     const updated = await getRideById(id);
     return NextResponse.json(updated);
   } catch (err: unknown) {
