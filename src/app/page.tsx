@@ -1,6 +1,18 @@
 import { cities } from "@/lib/cities";
+import { supabaseServer } from "@/lib/supabase-server";
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+async function getStats() {
+  const [{ count: rideCount }, { count: userCount }] = await Promise.all([
+    supabaseServer.from("rides").select("*", { count: "exact", head: true }),
+    supabaseServer.from("users").select("*", { count: "exact", head: true }),
+  ]);
+  return { rides: rideCount ?? 0, users: userCount ?? 0 };
+}
+
+export default async function Home() {
+  const stats = await getStats();
   return (
     <div>
       {/* Hero Section */}
@@ -111,15 +123,15 @@ export default function Home() {
       <section className="border-t border-white/5">
         <div className="max-w-6xl mx-auto px-4 py-12 grid grid-cols-3 gap-8 text-center">
           <div>
-            <p className="text-3xl font-bold text-accent">10+</p>
+            <p className="text-3xl font-bold text-accent">{cities.length}</p>
             <p className="text-gray-500 text-sm mt-1">Cities</p>
           </div>
           <div>
-            <p className="text-3xl font-bold text-teal">90+</p>
+            <p className="text-3xl font-bold text-teal">{stats.rides}</p>
             <p className="text-gray-500 text-sm mt-1">Active Rides</p>
           </div>
           <div>
-            <p className="text-3xl font-bold text-royal">50+</p>
+            <p className="text-3xl font-bold text-royal">{stats.users}</p>
             <p className="text-gray-500 text-sm mt-1">Riders</p>
           </div>
         </div>
