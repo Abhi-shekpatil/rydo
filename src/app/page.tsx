@@ -43,7 +43,20 @@ export default async function Home() {
             method="GET"
             className="bg-dark-800/80 backdrop-blur-sm rounded-2xl border border-white/5 p-6 max-w-3xl mx-auto text-left shadow-2xl shadow-dark-950/50"
           >
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+              <div>
+                <label className="block text-xs font-medium text-gray-500 mb-1.5 uppercase tracking-wider">
+                  Vehicle
+                </label>
+                <select
+                  name="vehicle"
+                  className="w-full bg-dark-700 border border-white/10 rounded-lg px-3 py-2.5 text-white focus:ring-2 focus:ring-accent/50 focus:border-accent/50 transition"
+                >
+                  <option value="all">🚗🏍️ All</option>
+                  <option value="bike">🏍️ Bike</option>
+                  <option value="car">🚗 Car</option>
+                </select>
+              </div>
               <div>
                 <label className="block text-xs font-medium text-gray-500 mb-1.5 uppercase tracking-wider">
                   From
