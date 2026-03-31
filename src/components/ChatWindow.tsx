@@ -184,7 +184,7 @@ export default function ChatWindow({
 
               if (contact) {
                 const waLink = `https://wa.me/91${contact.phone}?text=${encodeURIComponent(
-                  `Hi ${contact.name}, connecting via Rydo!`
+                  `Hi ${contact.name}, connecting via Rydon!`
                 )}`;
                 return (
                   <div key={msg.id} className={`flex ${isMine ? "justify-end" : "justify-start"} mb-2`}>

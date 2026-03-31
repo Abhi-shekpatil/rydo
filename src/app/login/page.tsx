@@ -38,7 +38,7 @@ export default function LoginPage() {
     <div className="max-w-md mx-auto px-4 py-16">
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold text-white mb-2">Welcome back</h1>
-        <p className="text-gray-500">Login to your Rydo account</p>
+        <p className="text-gray-500">Login to your Rydon account</p>
       </div>
 
       <form onSubmit={handleSubmit} className="bg-dark-800/60 rounded-2xl border border-white/5 p-6 space-y-4">

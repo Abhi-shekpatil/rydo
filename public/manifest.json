@@ -1,6 +1,6 @@
 {
-  "name": "Rydo - Intercity Bike Pooling",
-  "short_name": "Rydo",
+  "name": "Rydon - Intercity Bike Pooling",
+  "short_name": "Rydon",
   "description": "Find a co-rider for your next intercity bike trip. Share the ride, split the cost.",
   "start_url": "/",
   "display": "standalone",

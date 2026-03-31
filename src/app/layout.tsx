@@ -7,7 +7,7 @@ import NotificationBell from "./NotificationBell";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Rydo - Intercity Bike Ride Pooling",
+  title: "Rydon - Intercity Bike Ride Pooling",
   description:
     "Find a co-rider for your next intercity bike trip. Share the ride, split the cost, enjoy the journey.",
   manifest: "/manifest.json",
@@ -23,7 +23,7 @@ async function Navbar() {
       <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
         <a href="/" className="text-2xl font-bold tracking-tight">
           <span className="text-accent">Ry</span>
-          <span className="text-white">do</span>
+          <span className="text-white">don</span>
         </a>
         <div className="flex items-center gap-2 text-sm font-medium">
           {/* Search rides icon */}
@@ -103,7 +103,7 @@ function Footer() {
       <div className="max-w-6xl mx-auto px-4 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
         <div>
           <span className="text-accent font-bold text-lg">Ry</span>
-          <span className="text-white font-bold text-lg">do</span>
+          <span className="text-white font-bold text-lg">don</span>
           <p className="text-gray-600 text-xs mt-1">India&apos;s intercity bike ride pooling</p>
         </div>
         <div className="flex items-center gap-6 text-sm text-gray-500">
@@ -111,7 +111,7 @@ function Footer() {
           <a href="/terms" className="hover:text-white transition">Terms</a>
           <a href="/privacy" className="hover:text-white transition">Privacy</a>
         </div>
-        <p className="text-gray-600 text-xs">© {new Date().getFullYear()} Rydo. All rights reserved.</p>
+        <p className="text-gray-600 text-xs">© {new Date().getFullYear()} Rydon. All rights reserved.</p>
       </div>
     </footer>
   );

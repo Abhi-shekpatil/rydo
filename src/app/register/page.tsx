@@ -157,7 +157,7 @@ export default function RegisterPage() {
   return (
     <div className="max-w-lg mx-auto px-4 py-12">
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-white mb-2">Join Rydo</h1>
+        <h1 className="text-3xl font-bold text-white mb-2">Join Rydon</h1>
         <p className="text-gray-500">Create your account to start riding together</p>
       </div>
 

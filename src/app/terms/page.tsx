@@ -8,14 +8,14 @@ export default function TermsPage() {
         <section>
           <h2 className="text-lg font-semibold text-white mb-2">1. Acceptance</h2>
           <p>
-            By creating an account on Rydo, you agree to these Terms of Service. If you do not agree, do not use the platform.
+            By creating an account on Rydon, you agree to these Terms of Service. If you do not agree, do not use the platform.
           </p>
         </section>
 
         <section>
           <h2 className="text-lg font-semibold text-white mb-2">2. Eligibility</h2>
           <p>
-            You must hold a valid Indian driving license and be at least 18 years old to use Rydo. By registering, you
+            You must hold a valid Indian driving license and be at least 18 years old to use Rydon. By registering, you
             confirm that the Aadhaar and driving license details you provide are accurate and belong to you.
           </p>
         </section>
@@ -23,8 +23,8 @@ export default function TermsPage() {
         <section>
           <h2 className="text-lg font-semibold text-white mb-2">3. Ride Sharing</h2>
           <p>
-            Rydo is a platform for connecting co-riders. We do not operate rides, employ riders, or guarantee the safety
-            of any ride. All arrangements are made directly between users. Rydo is not responsible for any accidents,
+            Rydon is a platform for connecting co-riders. We do not operate rides, employ riders, or guarantee the safety
+            of any ride. All arrangements are made directly between users. Rydon is not responsible for any accidents,
             losses, or disputes arising from rides arranged through the platform.
           </p>
         </section>
@@ -32,14 +32,14 @@ export default function TermsPage() {
         <section>
           <h2 className="text-lg font-semibold text-white mb-2">4. Payments</h2>
           <p>
-            All fuel cost sharing is agreed upon and settled directly between riders. Rydo does not process or hold any
+            All fuel cost sharing is agreed upon and settled directly between riders. Rydon does not process or hold any
             payments.
           </p>
         </section>
 
         <section>
           <h2 className="text-lg font-semibent text-white mb-2">5. Prohibited Conduct</h2>
-          <p>You must not use Rydo to:</p>
+          <p>You must not use Rydon to:</p>
           <ul className="list-disc list-inside mt-2 space-y-1">
             <li>Provide false identity or document information</li>
             <li>Harass, threaten, or harm other users</li>
