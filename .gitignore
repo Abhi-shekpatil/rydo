@@ -3,3 +3,15 @@ node_modules
 .env.local
 data/rides.json
 .vercel
+
+# Android TWA build artifacts
+android-twa/.gradle/
+android-twa/app/build/
+android-twa/app-release-bundle.aab
+android-twa/app-release-bundle2.aab
+android-twa/app-release-signed.apk
+android-twa/app-release-signed.apk.idsig
+android-twa/app-release-unsigned-aligned.apk
+android-twa/android.keystore
+android-twa/build/
+android-twa/manifest-checksum.txt
